@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}To-Do List{% endblock %}
+
+{% block content %}
+<p class="fw-medium mb-4">My To-Do List</p>
+
+{% for task in tasks %}
+<div class="d-flex align-items-center gap-3 p-3 mb-3 bg-white border rounded-3" style="width: 75%;">
+
+    <div class="d-flex gap-2 flex-grow-1">
+        <div class="bg-light border rounded-2 p-2 flex-grow-1">
+            <div class="text-muted" style="font-size: 11px;">Task</div>
+            <div class="fw-medium {% if task.is_completed %}text-decoration-line-through text-muted{% endif %}" style="font-size: 13px;">{{ task.name }}</div>
+        </div>
+        <div class="bg-light border rounded-2 p-2">
+            <div class="text-muted" style="font-size: 11px;">Category</div>
+            <div class="fw-medium" style="font-size: 13px;">{{ task.category or '—' }}</div>
+        </div>
+        <div class="bg-light border rounded-2 p-2">
+            <div class="text-muted" style="font-size: 11px;">Deadline</div>
+            <div class="fw-medium" style="font-size: 13px;">{{ task.deadline.strftime('%d %b %Y') if task.deadline else '—' }}</div>
+        </div>
+        <div class="bg-light border rounded-2 p-2">
+            <div class="text-muted" style="font-size: 11px;">Repeat</div>
+            <div class="fw-medium" style="font-size: 13px;">{{ 'Every ' ~ task.repetition ~ ' days' if task.repetition else '—' }}</div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+        {% if task.is_completed %}
+        <span class="text-success" style="font-size: 12px;">✓ Done</span>
+        {% else %}
+        <form method="POST" action="{{ url_for('todolist.complete_task', task_id=task.id) }}">
+            {{ form.hidden_tag() }}
+            <button type="submit" class="btn btn-outline-success btn-sm">✓ Mark done</button>
+        </form>
+        {% endif %}
+        <form method="POST" action="{{ url_for('todolist.delete_task', task_id=task.id) }}">
+            {{ form.hidden_tag() }}
+            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+        </form>
+    </div>
+
+</div>
+{% else %}
+<p class="text-muted">No tasks yet. <a href="{{ url_for('todolist.task_creation') }}">Create one!</a></p>
+{% endfor %}
+
+<a href="{{ url_for('todolist.task_creation') }}" class="btn btn-outline-secondary btn-lg px-4 mt-2">Create a Task</a>
+
+{% endblock %}

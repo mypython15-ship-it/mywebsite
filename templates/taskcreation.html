@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="box">
+  <h1>Create a Task</h1>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li style="color:Tomato;">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+  <!-- TODO: Use Message Flashing to display feedback to the user with a <p> -->
+  <form method="POST">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3" style="width: 50%">
+    {{ form.name.label(class="form-label") }}
+    {{ form.name(class="form-control") }}
+    {{ form.deadline.label(class="form-label") }}
+    {{ form.deadline(class="form-control") }}
+    {% for error in form.deadline.errors %}
+      <div class="text-danger" style="font-size: 13px;">{{ error }}</div>
+    {% endfor %}
+
+    {{ form.repetition.label(class="form-label") }}
+    {{ form.repetition(class="form-control") }}
+    {{ form.category.label(class="form-label") }}
+    {{ form.category(class="form-control") }}
+
+  </div>
+
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+</div>
+
+
+{% endblock %}

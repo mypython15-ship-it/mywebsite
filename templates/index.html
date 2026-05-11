@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+
+  <svg width="100%" viewBox="0 0 680 200" role="img">
+    <title>My Projects Library fun hero illustration</title>
+    <desc>A playful Python snake mascot sitting on project cards</desc>
+    <ellipse cx="340" cy="175" rx="180" ry="12" fill="#e2e8f0"/>
+    <rect x="220" y="130" width="90" height="50" rx="8" fill="#fde68a" stroke="#fbbf24" stroke-width="1"/>
+    <rect x="220" y="130" width="90" height="18" rx="8" fill="#fbbf24"/>
+    <rect x="220" y="142" width="90" height="6" fill="#fbbf24"/>
+    <text x="265" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="500" fill="#78350f">To-Do List</text>
+    <text x="232" y="163" font-family="Arial, sans-serif" font-size="8" fill="#92400e">☑ Buy milk</text>
+    <text x="232" y="174" font-family="Arial, sans-serif" font-size="8" fill="#92400e">☐ Learn Flask</text>
+    <rect x="318" y="120" width="100" height="60" rx="8" fill="#a5f3fc" stroke="#22d3ee" stroke-width="1"/>
+    <rect x="318" y="120" width="100" height="18" rx="8" fill="#22d3ee"/>
+    <rect x="318" y="132" width="100" height="6" fill="#22d3ee"/>
+    <text x="368" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="500" fill="#164e63">Morse</text>
+    <text x="328" y="154" font-family="Courier New, monospace" font-size="9" fill="#164e63">... --- ...</text>
+    <text x="328" y="168" font-family="Courier New, monospace" font-size="9" fill="#164e63">.- .-.</text>
+    <rect x="426" y="135" width="80" height="45" rx="8" fill="#d8b4fe" stroke="#a855f7" stroke-width="1"/>
+    <rect x="426" y="135" width="80" height="16" rx="8" fill="#a855f7"/>
+    <rect x="426" y="145" width="80" height="6" fill="#a855f7"/>
+    <text x="466" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="500" fill="#fff">Soon...</text>
+    <text x="436" y="164" font-family="Arial, sans-serif" font-size="16" fill="#7e22ce">?</text>
+    <text x="458" y="164" font-family="Arial, sans-serif" font-size="16" fill="#7e22ce">?</text>
+    <rect x="148" y="140" width="76" height="40" rx="8" fill="#bbf7d0" stroke="#4ade80" stroke-width="1"/>
+    <rect x="148" y="140" width="76" height="15" rx="8" fill="#4ade80"/>
+    <rect x="148" y="149" width="76" height="6" fill="#4ade80"/>
+    <text x="186" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="500" fill="#14532d">Soon...</text>
+    <text x="158" y="170" font-family="Arial, sans-serif" font-size="16" fill="#16a34a">?</text>
+    <text x="178" y="170" font-family="Arial, sans-serif" font-size="16" fill="#16a34a">?</text>
+    <ellipse cx="340" cy="125" rx="28" ry="22" fill="#4ade80"/>
+    <ellipse cx="330" cy="118" rx="9" ry="11" fill="#4ade80"/>
+    <ellipse cx="350" cy="118" rx="9" ry="11" fill="#4ade80"/>
+    <ellipse cx="340" cy="125" rx="24" ry="18" fill="#86efac"/>
+    <circle cx="333" cy="120" r="5" fill="#fff"/>
+    <circle cx="347" cy="120" r="5" fill="#fff"/>
+    <circle cx="334" cy="120" r="2.5" fill="#1e293b"/>
+    <circle cx="348" cy="120" r="2.5" fill="#1e293b"/>
+    <circle cx="335" cy="119" r="1" fill="#fff"/>
+    <circle cx="349" cy="119" r="1" fill="#fff"/>
+    <path d="M333 130 Q340 135 347 130" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M325 108 Q322 100 318 98 M325 108 Q323 99 327 97" stroke="#4ade80" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M355 108 Q358 100 362 98 M355 108 Q357 99 353 97" stroke="#4ade80" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M340 143 Q345 148 340 155 Q335 162 342 168 Q348 174 340 178" stroke="#4ade80" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M340 143 Q345 148 340 155 Q335 162 342 168 Q348 174 340 178" stroke="#86efac" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <text x="270" y="50" font-family="Arial, sans-serif" font-size="11" fill="#f59e0b" transform="rotate(-15 270 50)">✨</text>
+    <text x="390" y="45" font-family="Arial, sans-serif" font-size="11" fill="#f59e0b" transform="rotate(10 390 45)">✨</text>
+    <text x="180" y="100" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8" transform="rotate(-8 180 100)">import fun</text>
+    <text x="440" y="105" font-family="Arial, sans-serif" font-size="9" fill="#94a3b8" transform="rotate(6 440 105)">print("hello!")</text>
+  </svg>
+
+  <h1 class="display-5 fw-bold text-body-emphasis">Welcome to My Projects Library</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">This library will host the little projects I decided to create using Python. If you want to use
+      some of these, you might want to create an account or login.</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-4 gap-3">Register</a>
+      <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

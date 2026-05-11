@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<p>Welcome to Morse Converter</p>
+<p>Enter any text and convert it to Morse Code by clicking the Convert button!</p>
+<form method="POST">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3">
+    {{ form.text.label(class="form-label") }}
+    {{ form.text(class="form-control") }}
+  </div>
+
+  {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% if text %}
+
+<p>Your encoded text is:</p>
+  <p>{{ text }}</p>
+{% endif %}
+{% endblock %}
