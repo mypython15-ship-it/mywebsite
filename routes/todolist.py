@@ -56,3 +56,14 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for("todolist.index"))
+
+
+@todolist.route("/todolist/undo/<int:task_id>", methods=["POST"])
+@login_required
+def undo_task(task_id):
+    task = db.session.get(Task, task_id)
+    if task is None or task.creator_id != current_user.id:
+        abort(403)
+    task.completed_at = None
+    db.session.commit()
+    return redirect(url_for("todolist.index"))

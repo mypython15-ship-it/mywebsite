@@ -14,6 +14,15 @@ class User(db.Model, UserMixin):
 
     tasks: Mapped[list["Task"]] = relationship(back_populates="creator")
     shared_tasks: Mapped[list["TaskShare"]] = relationship(back_populates="user")
+    sent_requests: Mapped[list["Friendship"]] = relationship(
+        back_populates="requester",
+        foreign_keys="[Friendship.requester_id]"
+    )
+
+    received_requests: Mapped[list["Friendship"]] = relationship(
+        back_populates="receiver",
+        foreign_keys="[Friendship.receiver_id]"
+    )    
 
 
 class Task(db.Model):
@@ -35,7 +44,7 @@ class Task(db.Model):
     def is_completed(self):
         if self.completed_at is None:
             return False
-        if self.repetition is None:
+        if not self.repetition:
             return True
         elapsed = datetime.utcnow() - self.completed_at
         return elapsed.days < self.repetition
@@ -55,3 +64,17 @@ class TaskShare(db.Model):
     # Permission to be added
 
 
+class Friendship(db.Model):
+    requester_id: Mapped[int] = mapped_column(ForeignKey("user.id"), primary_key=True)
+    receiver_id: Mapped[int] = mapped_column(ForeignKey("user.id"), primary_key=True)
+    status: Mapped[str] = mapped_column(nullable=False, default="pending")
+
+    requester: Mapped["User"] = relationship(
+        back_populates="sent_requests",
+        foreign_keys=[requester_id]
+    )
+
+    receiver: Mapped["User"] = relationship(
+        back_populates="received_requests", 
+        foreign_keys=[receiver_id]
+    )

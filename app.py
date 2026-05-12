@@ -3,6 +3,7 @@ from extensions import db, login_manager
 from routes.auth import auth
 from routes.morse import morse
 from routes.todolist import todolist
+from routes.friends import friends
 from models import User
 from dotenv import load_dotenv
 import os
@@ -25,13 +26,14 @@ migrate = Migrate(app, db)
 app.register_blueprint(auth)
 app.register_blueprint(morse)
 app.register_blueprint(todolist)
+app.register_blueprint(friends)
 
 login_manager.init_app(app)
 login_manager.login_view = "auth.login"
 
 
 projects = [
-    # {"name": "Project 1", "endpoint": "project1"},
+    {"name": "Friends", "endpoint": "friends.index"},
     {"name": "To-Do List", "endpoint": "todolist.index"},
     {"name": "Morse Converter", "endpoint": "morse.index"},
 ]

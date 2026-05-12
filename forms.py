@@ -32,7 +32,7 @@ class LoginForm(FlaskForm):
 class TaskCreationForm(FlaskForm):
     name = StringField("Name of the Task", validators=[DataRequired()])
     deadline = DateField("By when should this task be completed?", validators=[Optional(), validate_future_date])
-    repetition = IntegerField("Repetition: Every X Days?")
+    repetition = IntegerField("Repetition: Every X Days?", validators=[Optional()])
     category = SelectField("Category", choices=[
         ("household", "Household"),
         ("study", "Study"),
