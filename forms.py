@@ -46,3 +46,8 @@ class TaskCreationForm(FlaskForm):
 
 class EmptyForm(FlaskForm):
     pass
+
+
+class FriendForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    submit = SubmitField("Submit")

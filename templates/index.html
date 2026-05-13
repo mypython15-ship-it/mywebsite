@@ -59,8 +59,12 @@
     <p class="lead mb-4">This library will host the little projects I decided to create using Python. If you want to use
       some of these, you might want to create an account or login.</p>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      {% if not current_user.is_authenticated %}
       <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-4 gap-3">Register</a>
       <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+      {% else %}
+      <p>You are logged in as {{current_user.username}}</p>
+      {% endif %}
     </div>
   </div>
 
