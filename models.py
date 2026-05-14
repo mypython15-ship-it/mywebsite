@@ -4,6 +4,8 @@ from flask_login import UserMixin
 from extensions import db
 from datetime import datetime
 from typing import Optional
+from sqlalchemy import or_, and_
+
 
 
 class User(db.Model, UserMixin):
@@ -22,7 +24,26 @@ class User(db.Model, UserMixin):
     received_requests: Mapped[list["Friendship"]] = relationship(
         back_populates="receiver",
         foreign_keys="[Friendship.receiver_id]"
-    )    
+    )
+
+    @property
+    def get_friends(self):
+        friendships = db.session.execute(db.select(Friendship).filter(and_(or_(Friendship.requester_id==self.id, Friendship.receiver_id==self.id), Friendship.status =="accepted"))).scalars().all()
+        friends = [friendship.receiver if friendship.requester_id == self.id else friendship.requester for friendship in friendships]
+        return friends                         
+
+    @property
+    def get_friends_requests_pending(self):
+        request_pending = db.session.execute(db.select(Friendship).filter(and_(Friendship.requester_id==self.id, Friendship.status =="pending"))).scalars().all()
+        friends = [friendship.receiver for friendship in request_pending]
+        return friends
+
+
+    @property
+    def get_friends_requests_to_accept(self):
+        request_pending = db.session.execute(db.select(Friendship).filter(and_(Friendship.receiver_id==self.id, Friendship.status =="pending"))).scalars().all()
+        friends = [friendship.requester for friendship in request_pending]
+        return friends        
 
 
 class Task(db.Model):

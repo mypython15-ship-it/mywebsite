@@ -4,7 +4,7 @@ from extensions import db
 from models import User, Friendship
 from flask_login import login_required, current_user
 from datetime import datetime
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 friends = Blueprint("friends", __name__)
 
@@ -12,8 +12,9 @@ friends = Blueprint("friends", __name__)
 @friends.route("/friends")
 @login_required
 def index():
+    friendships = 
     form = EmptyForm()
-    return render_template("friends.html", form=form)
+    return render_template("friends.html", form=form, friendships=friendships)
 
 
 @friends.route("/friends/add", methods=["GET", "POST"])
@@ -23,6 +24,9 @@ def send_friend_request():
     if form.validate_on_submit():
         receiver = db.session.execute(db.select(User).filter_by(username=form.username.data)).scalar()
         if not receiver or current_user.id == receiver.id:
+            abort(403)
+        if db.session.execute(db.select(Friendship).filter(or_(and_(Friendship.requester_id==current_user.id, Friendship.receiver_id== receiver.id),
+                                     and_(Friendship.requester_id==receiver.id, Friendship.receiver_id== current_user.id)))).scalar():
             abort(403)
         new_friendship = Friendship(
             requester_id = current_user.id,
@@ -35,6 +39,4 @@ def send_friend_request():
 
     return render_template("addfriend.html")
 
-# if db.session.execute(db.select(Friendship).filter_by(requester_id == current_user.id and receiver_id == receiver.id)).scalar()
-# db.users.filter(or_(db.users.name=='Ryan', db.users.country=='England'))
 

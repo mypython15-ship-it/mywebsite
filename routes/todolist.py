@@ -3,7 +3,7 @@ from forms import TaskCreationForm, EmptyForm
 from extensions import db
 from models import Task
 from flask_login import login_required, current_user
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 todolist = Blueprint("todolist", __name__)
@@ -43,6 +43,8 @@ def complete_task(task_id):
     if task is None or task.creator_id != current_user.id:
         abort(403)
     task.completed_at = datetime.utcnow()
+    if task.repetition:
+        task.deadline = task.completed_at + timedelta(days=task.repetition)
     db.session.commit()
     return redirect(url_for("todolist.index"))
 

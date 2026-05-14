@@ -50,4 +50,4 @@ class EmptyForm(FlaskForm):
 
 class FriendForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Send Friend Request")
