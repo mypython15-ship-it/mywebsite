@@ -12,9 +12,11 @@ friends = Blueprint("friends", __name__)
 @friends.route("/friends")
 @login_required
 def index():
-    friendships = 
+    requests_pending = current_user.get_friends_requests_pending
+    requests_received = current_user.get_friends_requests_to_accept
+    friendships = current_user.get_friends
     form = EmptyForm()
-    return render_template("friends.html", form=form, friendships=friendships)
+    return render_template("friends.html", form=form, friendships=friendships, requests_pending=requests_pending, requests_received=requests_received)
 
 
 @friends.route("/friends/add", methods=["GET", "POST"])
@@ -37,6 +39,6 @@ def send_friend_request():
         db.session.commit()
         return redirect(url_for("friends.index"))
 
-    return render_template("addfriend.html")
+    return render_template("addfriend.html", form=form)
 
 

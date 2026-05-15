@@ -4,6 +4,30 @@
 
 {% block content %}
 <h1>Friends</h1>
+{%if frienships%}
+    {% for i in friendships %}
+    <p>{{i.username}}</p>
+    {% endfor %}
+{% else %}
+    <p>No friends yet.</p>
+{% endif %}
 
+{% if requests_pending %}
+    {% for i in requests_pending %}
+        <p>{{i.username}} didn't accept your friend's request yet.</p>
+    {% endfor %}
+{% else %}
+    <p>No friend's request pending.</p>
+{% endif %}
+
+{% if requests_received %}
+    {% for i in requests_received %}
+        <p>Do you want to accept {{i.username}}'s request?</p>
+    {% endfor %}
+{% else %}
+    <p>No friend's request to be approved.</p>
+{% endif %}
+
+<a href="{{ url_for('friends.send_friend_request') }}" class="btn btn-primary btn-lg px-4 gap-3">Find a friend</a>
 
 {% endblock %}

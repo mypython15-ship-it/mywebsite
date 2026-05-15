@@ -5,5 +5,15 @@
 {% block content %}
 <h1>Add a Friend</h1>
 
+<form method="POST">
+  {{ form.hidden_tag() }}
+
+  <div class="mb-3" style="width: 50%">
+    {{ form.username.label(class="form-label") }}
+    {{ form.username(class="form-control") }}
+  </div>
+
+  {{ form.submit(class="btn btn-primary") }}
+</form>
 
 {% endblock %}
