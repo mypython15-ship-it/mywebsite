@@ -1,33 +1,69 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Friends{% endblock %}
 
 {% block content %}
-<h1>Friends</h1>
-{%if frienships%}
-    {% for i in friendships %}
-    <p>{{i.username}}</p>
-    {% endfor %}
-{% else %}
-    <p>No friends yet.</p>
-{% endif %}
+<p class="fw-medium mb-1" style="font-size: 22px;">Friends</p>
+<p class="text-muted mb-4">Manage your friends and share tasks with them</p>
 
-{% if requests_pending %}
-    {% for i in requests_pending %}
-        <p>{{i.username}} didn't accept your friend's request yet.</p>
-    {% endfor %}
-{% else %}
-    <p>No friend's request pending.</p>
-{% endif %}
+<p class="text-muted mb-2" style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Your friends — {{ friendships|length }}</p>
 
-{% if requests_received %}
-    {% for i in requests_received %}
-        <p>Do you want to accept {{i.username}}'s request?</p>
-    {% endfor %}
+{% for friend in friendships %}
+<div class="d-flex align-items-center gap-3 p-3 mb-2 bg-white border rounded-3">
+    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-medium" style="width:40px; height:40px; font-size:14px; flex-shrink:0;">
+        {{ friend.username[:2].upper() }}
+    </div>
+    <div>
+        <p class="mb-0 fw-medium" style="font-size:14px;">{{ friend.username }}</p>
+        <p class="mb-0 text-muted" style="font-size:12px;">✓ Friends</p>
+    </div>
+</div>
 {% else %}
-    <p>No friend's request to be approved.</p>
-{% endif %}
+<p class="text-muted">No friends yet.</p>
+{% endfor %}
 
-<a href="{{ url_for('friends.send_friend_request') }}" class="btn btn-primary btn-lg px-4 gap-3">Find a friend</a>
+<p class="text-muted mt-4 mb-2" style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Requests sent</p>
+
+{% for friend in current_user.get_friends_requests_pending %}
+<div class="d-flex align-items-center gap-3 p-3 mb-2 bg-white border rounded-3">
+    <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center fw-medium" style="width:40px; height:40px; font-size:14px; flex-shrink:0;">
+        {{ friend.username[:2].upper() }}
+    </div>
+    <div>
+        <p class="mb-0 fw-medium" style="font-size:14px;">{{ friend.username }}</p>
+        <p class="mb-0 text-muted" style="font-size:12px;">⏳ Request sent</p>
+    </div>
+</div>
+{% else %}
+<p class="text-muted">No pending requests.</p>
+{% endfor %}
+
+<p class="text-muted mt-4 mb-2" style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Requests to accept</p>
+
+{% for friend in current_user.get_friends_requests_to_accept %}
+<div class="d-flex align-items-center gap-3 p-3 mb-2 bg-white border rounded-3">
+    <div class="rounded-circle bg-info bg-opacity-10 text-info d-flex align-items-center justify-content-center fw-medium" style="width:40px; height:40px; font-size:14px; flex-shrink:0;">
+        {{ friend.username[:2].upper() }}
+    </div>
+    <div class="flex-grow-1">
+        <p class="mb-0 fw-medium" style="font-size:14px;">{{ friend.username }}</p>
+        <p class="mb-0 text-muted" style="font-size:12px;">Wants to be your friend</p>
+    </div>
+    <div class="d-flex gap-2">
+        <form method="POST" action="{{ url_for('friends.accept_request', user_id=friend.id) }}">
+            {{ form.hidden_tag() }}
+            <button class="btn btn-outline-success btn-sm">Accept</button>
+        </form>
+        <form method="POST" action="{{ url_for('friends.decline_request', user_id=friend.id) }}">
+            {{ form.hidden_tag() }}
+            <button class="btn btn-outline-danger btn-sm">Decline</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<p class="text-muted">No incoming requests.</p>
+{% endfor %}
+
+<a href="{{ url_for('friends.send_friend_request') }}" class="btn btn-outline-secondary mt-4">Add a friend</a>
 
 {% endblock %}
