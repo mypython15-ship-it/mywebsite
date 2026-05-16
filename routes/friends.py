@@ -42,3 +42,44 @@ def send_friend_request():
     return render_template("addfriend.html", form=form)
 
 
+@friends.route("/friends/accept/<int:user_id>", methods=["POST"])
+@login_required
+def accept_friend_request(user_id):
+    request = db.session.execute(db.select(Friendship).filter(and_(Friendship.requester_id==user_id,
+                                                                    Friendship.receiver_id==current_user.id))).scalar()
+    if not request:
+        abort(404)
+    if request.status != "pending":
+        abort(403)
+    request.status = "accepted"
+    db.session.commit()
+    return redirect(url_for("friends.index"))
+
+
+@friends.route("/friends/decline/<int:user_id>", methods=["POST"])
+@login_required
+def decline_friend_request(user_id):
+    request = db.session.execute(db.select(Friendship).filter(and_(Friendship.requester_id==user_id,
+                                                                    Friendship.receiver_id==current_user.id))).scalar()
+    if not request:
+        abort(404)
+    if request.status != "pending":
+        abort(403)
+    db.session.delete(request)
+    db.session.commit()
+    return redirect(url_for("friends.index"))
+
+
+@friends.route("/friends/delete/<int:user_id>", methods=["POST"])
+@login_required
+def delete_friend(user_id):
+    friendship = db.session.execute(db.select(Friendship).filter(or_(and_(Friendship.requester_id==user_id,
+                                                                    Friendship.receiver_id==current_user.id), and_(Friendship.requester_id==current_user.id,
+                                                                    Friendship.receiver_id==user_id)))).scalar()
+    if not friendship:
+        abort(404)
+    if friendship.status != "accepted":
+        abort(403)
+    db.session.delete(friendship)
+    db.session.commit()
+    return redirect(url_for("friends.index"))

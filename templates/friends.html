@@ -16,6 +16,10 @@
     <div>
         <p class="mb-0 fw-medium" style="font-size:14px;">{{ friend.username }}</p>
         <p class="mb-0 text-muted" style="font-size:12px;">✓ Friends</p>
+        <form method="POST" action="{{ url_for('friends.delete_friend', user_id=friend.id) }}">
+            {{ form.hidden_tag() }}
+            <button class="btn btn-outline-danger btn-sm">Delete</button>
+        </form>
     </div>
 </div>
 {% else %}
@@ -50,11 +54,11 @@
         <p class="mb-0 text-muted" style="font-size:12px;">Wants to be your friend</p>
     </div>
     <div class="d-flex gap-2">
-        <form method="POST" action="{{ url_for('friends.accept_request', user_id=friend.id) }}">
+        <form method="POST" action="{{ url_for('friends.accept_friend_request', user_id=friend.id) }}">
             {{ form.hidden_tag() }}
             <button class="btn btn-outline-success btn-sm">Accept</button>
         </form>
-        <form method="POST" action="{{ url_for('friends.decline_request', user_id=friend.id) }}">
+        <form method="POST" action="{{ url_for('friends.decline_friend_request', user_id=friend.id) }}">
             {{ form.hidden_tag() }}
             <button class="btn btn-outline-danger btn-sm">Decline</button>
         </form>
